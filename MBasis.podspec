@@ -26,6 +26,8 @@ Pod::Spec.new do |s|
     "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) MBasis_NAME=#{s.name} MBasis_VERSION=#{s.version}"
   }
   
+  #一个subspec的数组，该数组将作为优先依赖的subspec进行提供，如果没有指定，则spec要求全部subspec为依赖项。
+  s.default_subspecs = ["SubBasis"]
   
   #Basis组件
   s.subspec 'SubBasis' do |ss|
@@ -106,6 +108,43 @@ Pod::Spec.new do |s|
         end
     
   end
+  
+  ###YS 这只是一个测试库 用来测试组件化集成其他sdk是否有问题
+  s.subspec "YSSDK" do |ss|
+        ss.resources = "YSLib_2.8.2.0/YSMeetingResources.bundle",
+          "YSLib_2.8.2.0/YSResources.bundle",
+          "YSLib_2.8.2.0/YSSkinRsource.bundle",
+          "YSLib_2.8.2.0/YSLive.xcassets",
+          "YSLib_2.8.2.0/expandLib/YSWhiteBoard/YSWhiteBoardResources.bundle",
+          "YSLib_2.8.2.0/expandLib/YSWhiteBoard/YSWhiteBoardSkin.bundle",
+          "YSLib_2.8.2.0/expandLib/YSWhiteBoard/YSWhiteBoardImage.xcassets",
+          "YSLib_2.8.2.0/expandLib/BMKit/BMTZImagePickerController.bundle",
+          "YSLib_2.8.2.0/expandLib/BMKit/BMKitImage.xcassets",
+          "YSLib_2.8.2.0/expandLib/BMKit/BMKitResources.bundle",
+          "YSLib_2.8.2.0/expandLib/BMKit/BMDatePicker.nib"
+
+        ss.vendored_frameworks =
+          "YSLib_2.8.2.0/YSSDK.framework",
+          "YSLib_2.8.2.0/expandLib/YSSession.framework",
+          "YSLib_2.8.2.0/expandLib/CloudHubRTC.framework",
+          "YSLib_2.8.2.0/expandLib/YSWhiteBoard/YSWhiteBoard.framework",
+          "YSLib_2.8.2.0/expandLib/BMKit/BMKit.framework"
+
+        ss.dependency 'Masonry'
+  
+        ss.user_target_xcconfig = {
+          'ENABLE_BITCODE' => 'NO',
+          "GCC_PREPROCESSOR_DEFINITIONS" => "DEFYSSDK=1",
+          "SWIFT_ACTIVE_COMPILATION_CONDITIONS" => "DEFYSSDK"
+        }
+
+        ss.pod_target_xcconfig = {
+          'ENABLE_BITCODE' => 'NO',
+          "GCC_PREPROCESSOR_DEFINITIONS" => "DEFYSSDK=1",
+          "SWIFT_ACTIVE_COMPILATION_CONDITIONS" => "DEFYSSDK"
+        }
+  end
+  
   s.dependency 'MGJRouter'
 
  # s.prefix_header_file = 'BaseSDK/MBasis.pch'

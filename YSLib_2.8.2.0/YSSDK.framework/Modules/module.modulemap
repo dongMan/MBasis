@@ -1,0 +1,6 @@
+framework module YSSDK {
+  umbrella header "YSSDKManager.h"
+
+  export *
+  module * { export * }
+}
